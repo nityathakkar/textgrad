@@ -24,6 +24,7 @@ class ChatAnthropic(EngineLM, CachedEngine):
         model_string: str="claude-3-opus-20240229",
         system_prompt: str=SYSTEM_PROMPT,
         is_multimodal: bool=False,
+        cache_or_not: bool=False,
     ):
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_anthropic_{model_string}.db")
@@ -38,6 +39,7 @@ class ChatAnthropic(EngineLM, CachedEngine):
         self.system_prompt = system_prompt
         assert isinstance(self.system_prompt, str)
         self.is_multimodal = is_multimodal
+        self._check_cache = self._check_cache if cache_or_not else lambda x: None
 
     def __call__(self, prompt, **kwargs):
         return self.generate(prompt, **kwargs)
